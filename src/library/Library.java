@@ -21,12 +21,17 @@ public class Library{
         }
         return null;
     }
-    public void checkoutItem(String isbn) throws InvalidLibraryOperationException{
+    public void checkoutItem(String isbn) throws InvalidLibraryOperationException {
         Item item = findByIsbn(isbn);
-        if(item == null){
+
+        if (item == null) {
             throw new InvalidLibraryOperationException("Checkout failed: ISBN " + isbn + " not found.");
         }
-        IO.println(item.borrowItem(14));
+        if (item.isBorrowed()) {
+            throw new InvalidLibraryOperationException("Checkout failed: '" + item.getTitle() + "' is already checked out.");
+        }
+
+        System.out.println(item.borrowItem(14));
     }
 
     public void returnItemByIsbn(String isbn) throws InvalidLibraryOperationException{
